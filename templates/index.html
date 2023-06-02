@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>House Price Prediction</title>
+
+
+    <style>
+        .small-image {
+            width: 30px; /* Set the desired width */
+            height: auto; /* Maintain aspect ratio */
+        }
+        body {
+            background-image: url('https://cdn.pixabay.com/photo/2017/06/22/11/54/town-2430571_1280.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .card {
+            width: 300px;
+            height: 200px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-size: 15px;
+            margin-bottom: 0px;
+        }
+
+        .card p {
+            font-size: 13px;
+        }
+        .name-container {
+            position: fixed;
+            top: 70px;
+            right: 10px;
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .linkedin-link {
+            margin-top: 5px;
+            font-size: 30px;
+            color: white;
+        }
+
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+
+<nav class="navbar navbar-dark bg-dark">
+    <a href="#"><img class="small-image" src="https://uon.edu.pk/assets/images/UON/UON_logo.png"></a>
+    <div>
+        <h3 class="navbar-brand">University Of Narowal</h3>
+    </div>
+</nav>
+
+<div  class="column">
+    <div class="card">
+        <img src="https://scholar.googleusercontent.com/citations?view_op=medium_photo&user=lWHw90AAAAAJ&citpid=2"
+             alt="Profile Picture">
+        <h2>Muhammad Naveed Yasir</h2>
+        <p>Additional IT Director / Assistant Professor</p>
+        <p>University of Narowal, Narowal, Pakistan</p>
+
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="card" style="width: 100%; height: 100%; margin-top: 30px">
+            <div class="card-header" style="text-align: center">
+                <h1>Welcome to House Price Predictor
+                </h1>
+            </div>
+
+            <div class="card-body">
+
+                <form method="post" accept-charset="utf-8">
+                    <div class="row">
+
+                        <div class="col-md-6 form-group" style="text-align: center">
+                            <label><b>Select the Location:</b></label>
+                            <select class="selectpicker form-control" id="location" name="location" required="1">
+                                {% for location in locations %}
+                                <option value="{{ location }}">{{ location}}</option>
+
+                                {%endfor%}
+
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-6 form-group" style="text-align: center">
+                            <label><b>Enter BHK:</b></label>
+                            <input type="text" class="form-control" id="bhk" name="bhk" placeholder="Enter BHK">
+                        </div>
+
+                        <div class="col-md-6 form-group" style="text-align: center">
+                            <label><b>Enter Numbers of bathrooms:</b></label>
+                            <input type="text" class="form-control" id="bath" name="bath"
+                                   placeholder="Enter Numbers of Bathrooms">
+                        </div>
+
+                        <div class="col-md-6 form-group" style="text-align: center">
+                            <label><b>Enter Square Feet:</b></label>
+                            <input type="text" class="form-control" id="total_sqft" name="total_sqft"
+                                   placeholder="Enter Square Feet">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <button class="btn btn-primary form-control" onclick="send_data()"> Predict Price</button>
+
+                        </div>
+
+                    </div>
+                </form>
+
+
+                <div class="col-md-12" style="text-align:center">
+                    <h3><span id="prediction"></span></h3>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    function form_handler(event){
+        event.preventDefault();
+    }
+
+    function send_data(){
+    document.querySelector('form').addEventListener("submit",form_handler);
+    var fd = new FormData(document.querySelector('form'));
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST','/predict',true);
+    document.getElementById("prediction").innerHTML = "Wait Predicting Price!....";
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState == XMLHttpRequest.DONE){
+            document.getElementById('prediction').innerHTML = "Prediction: Rs: " + xhr.responseText;
+        }
+    };
+
+    xhr.onload = function(){};
+    xhr.send(fd);
+}
+
+
+</script>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+ <div class="name-container">
+        <span>Developer</span>
+        <div class="linkedin-link">
+            <a href="https://www.linkedin.com/in/rana-junaid-ali-0138b8254/ " target="_blank">Rana Junaid Ali</a>
+        </div>
+    </div>
+</body>
+
+
+</html>
